@@ -42,7 +42,7 @@ elif [[ "${SKIP_CONDA_SOLVE}" == "yes" ]]; then
     PATH="/opt/conda/envs/${ENV_NAME}/bin:${PATH}"
     # For now install pip section manually. We could consider using pip-tools...
     # See https://github.com/conda-incubator/conda-lock/issues/4
-    pip install https://github.com/dirkcgrunwald/jupyter_codeserver_proxy-/archive/5596bc9c2fbd566180545fa242c659663755a427.tar.gz
+    # pip install https://github.com/dirkcgrunwald/jupyter_codeserver_proxy-/archive/5596bc9c2fbd566180545fa242c659663755a427.tar.gz
 else
     echo "SKIP_CONDA_SOLVE should be yes or no instead got: '${SKIP_CONDA_SOLVE}'"
     exit 1
@@ -52,8 +52,8 @@ fi
 /opt/conda/bin/conda list
 
 # ========== cleanup conda ===========
-/opt/conda/bin/mamba clean -afy
-# remove unnecissary files (statis, js.maps)
+# /opt/conda/bin/mamba clean -afy
+# remove unnecessary files (statis, js.maps)
 find /opt/conda/ -follow -type f -name '*.a' -delete
 find /opt/conda/ -follow -type f -name '*.js.map' -delete
 

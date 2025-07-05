@@ -153,20 +153,10 @@ FROM jupyterlab AS dandi
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && apt-get install -y --no-install-recommends \
-    libfuse3-3 \
-    liblzo2-2 \
-    uidmap \
-    fakeroot \
-    libseccomp2 \
-    squashfs-tools \
-    squashfuse \
-    fuse2fs \
-    fuse-overlayfs \
-    && curl -fsSLo apptainer.deb https://github.com/apptainer/apptainer/releases/download/v1.4.1/apptainer_1.4.1_amd64.deb \
-    && curl -fsSLo apptainer-suid.deb https://github.com/apptainer/apptainer/releases/download/v1.4.1/apptainer-suid_1.4.1_amd64.deb \
-    && dpkg -i apptainer.deb apptainer-suid.deb \
-    && rm apptainer.deb apptainer-suid.deb
+    apt-get update && apt install -y software-properties-common \
+    && add-apt-repository -y 'ppa:apptainer/ppa' \
+    && apt update \
+    && apt install -y apptainer-suid
 
 RUN df -h && curl --silent --show-error "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
   -o "awscliv2.zip" && unzip awscliv2.zip \

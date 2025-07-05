@@ -4,17 +4,8 @@ channels:
 dependencies:
   - pip
   - rclone
-  - 'h5py>3.3=mpi*'
-  - blosc
-  - eccodes
-  - websockify
   - pip:
-    - dandi
-    - neuroglancer
-    - ome-zarr
-    - webio_jupyter_extension
-    - tensorstore
-    - anndata
     - brainrender
     - napari
-    - jupyter-remote-desktop-proxy
+    - datalad
+    - neuroglancer

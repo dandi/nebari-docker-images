@@ -107,7 +107,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     libosmesa6 \
     gnupg \
     pinentry-curses \
-    git-lfs
+    git-lfs \
+    less \
+    dbus-x11 \
+    xfce4 \
+    xfce4-panel \
+    xfce4-session \
+    xfce4-settings \
+    xorg \
+    xubuntu-icon-theme \
+    tigervnc-standalone-server \
+    && curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"| tee /etc/apt/sources.list.d/brave-browser-release.list \
+    && apt-get -y -qq update \
+    && apt-get -y -qq install --no-install-recommends \
+        brave-browser
 
 ARG SKIP_CONDA_SOLVE=no
 COPY jupyterlab/environment.yaml /opt/jupyterlab/environment.yaml
@@ -153,7 +167,7 @@ FROM jupyterlab AS dandi
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && apt install -y software-properties-common \
+    apt-get update && apt install -y software-properties-common podman \
     && add-apt-repository -y 'ppa:apptainer/ppa' \
     && apt update \
     && apt install -y apptainer-suid
@@ -161,15 +175,6 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN df -h && curl --silent --show-error "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" \
   -o "awscliv2.zip" && unzip awscliv2.zip \
   && ./aws/install && rm -rf ./aws awscliv2.zip
-
-# Install jupyter server proxy and desktop
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"| tee /etc/apt/sources.list.d/brave-browser-release.list \
-    && apt-get -y -qq update \
-    && apt-get -y -qq install --no-install-recommends \
-        brave-browser
 
 COPY dandi/environment.yaml /opt/dandi/environment.yaml
 RUN --mount=type=cache,target=/opt/conda/pkgs,sharing=locked \

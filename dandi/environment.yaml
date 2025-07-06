@@ -5,7 +5,4 @@ dependencies:
   - pip
   - rclone
   - pip:
-    - brainrender
-    - napari
     - datalad
-    - neuroglancer
